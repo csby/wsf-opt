@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Key from './key'
+import ID from './id'
 
 const eventBus = new Vue();
 const keys = Key
@@ -21,5 +22,6 @@ export default {
     off,
     fire,
     local: keys.local,
-    websocket: keys.websocket
+    websocket: keys.websocket,
+    id: ID.ids,
 }

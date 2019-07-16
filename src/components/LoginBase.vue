@@ -1,6 +1,7 @@
 <script>
     import Component from 'vue-class-component'
     import VueBase from '@/components/VueBase'
+    import Version from '@/version'
     import JsEncrypt from 'jsencrypt/bin/jsencrypt'
 
     @Component({
@@ -8,12 +9,13 @@
             "autoLogin": {
                 handler: "autoLoginChanged"
             },
-            "rememberAccount": {
-                handler: "rememberAccountChanged"
+            "rememberPassword": {
+                handler: "rememberPasswordChanged"
             }
         }
     })
     export default class LoginBase extends VueBase {
+        frontVersion = Version.version
         errSummary = ""
         errDetail = ""
         captchaLength = 5
@@ -29,7 +31,7 @@
         passwordVal = ""
         backPath = "/"
         autoLogin = false
-        rememberAccount = false
+        rememberPassword = false
         initialized = false
         firstGetedCaptcha = false;
 
@@ -48,13 +50,13 @@
             }
 
             if(newVal) {
-                this.rememberAccount = true
+                this.rememberPassword = true;
             }
 
             this.$db.set(this.$db.keys.autoLogin, newVal);
         }
 
-        rememberAccountChanged(newVal, oldVal) {
+        rememberPasswordChanged(newVal, oldVal) {
             if(newVal === oldVal) {
                 return;
             }
@@ -67,7 +69,7 @@
                 this.autoLogin = false;
             }
 
-            this.$db.set(this.$db.keys.rememberAccount, newVal);
+            this.$db.set(this.$db.keys.rememberPassword, newVal);
         }
 
         onGetCaptchaImage(image) {
@@ -112,6 +114,14 @@
             if(response.data) {
                 if(response.data.code === 0) {
                     let host = this.$net.getHost(response.request.responseURL);
+                    if(this.isNullOrEmpty(host)) {
+                        if(response.config) {
+                            host = this.$net.getHost(response.config.baseURL);
+                        }
+                    }
+                    if(this.isNullOrEmpty(host)) {
+                        host = document.location.host;
+                    }
                     this.$db.set(this.$db.keys.host, host);
                 }
             }
@@ -127,13 +137,8 @@
                 this.$db.set(this.$db.keys.token, data.token);
                 this.$db.set(this.$db.keys.account, data.account);
                 this.$db.set(this.$db.keys.name, data.name);
+                this.$db.set(this.$db.keys.password, this.passwordVal, true);
                 this.$db.set(this.$db.keys.authorized, true);
-                if(this.autoLogin) {
-                    this.$db.set(this.$db.keys.password, this.passwordVal, true);
-                }
-                else {
-                    this.$db.remove(this.$db.keys.password);
-                }
 
                 this.to(this.backPath);
             }
@@ -189,22 +194,29 @@
         }
 
         mounted() {
+            let authorized = this.$db.authorized();
+            if(authorized) {
+                this.to("/")
+                return;
+            }
+
             if(this.$route.params.backPath) {
                 this.backPath = this.$route.params.backPath;
             }
 
-            let rememberAccount = this.$db.get(this.$db.keys.rememberAccount);
-            if(rememberAccount === true) {
-                this.rememberAccount = rememberAccount;
-                let account = this.$db.get(this.$db.keys.account);
-                if(this.isNotNullOrEmpty(account)) {
-                    this.accountVal = account;
-                }
+            let account = this.$db.get(this.$db.keys.account);
+            if(this.isNotNullOrEmpty(account)) {
+                this.accountVal = account;
+            }
 
+            let rememberPassword = this.$db.get(this.$db.keys.rememberPassword);
+            if(rememberPassword === true) {
                 let password = this.$db.get(this.$db.keys.password, true);
                 if(this.isNotNullOrEmpty(password)) {
                     this.passwordVal = password;
                 }
+
+                this.rememberPassword = true;
             }
             let autoLogin = this.$db.get(this.$db.keys.autoLogin);
             if(autoLogin === true) {

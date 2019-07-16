@@ -7,9 +7,9 @@ const keys = {
     // 凭证: string
     token: key("token"),
     // 账号: string
-    account: key("account"),
+    account: key("account", true),
     // 密码: string
-    password: key("password"),
+    password: key("password", true),
     // 姓名: string
     name: key("name"),
     // 已授权: bool
@@ -17,7 +17,7 @@ const keys = {
     // 自动登录: bool
     autoLogin: key("autoLogin", true),
     // 记住账号: bool
-    rememberAccount: key("rememberAccount", true),
+    rememberPassword: key("rememberPassword", true),
 }
 
 function key(v, reserved = false) {

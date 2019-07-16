@@ -18,6 +18,12 @@
             return true
         }
 
+        sleep(millisecond) {
+            let t = Date.now();
+            while(Date.now() - t <= millisecond){
+            }
+        }
+
         to(path) {
             if(this.isNullOrEmpty(path)) {
                 return;
@@ -83,6 +89,12 @@
         //  }
         upload(uri, argument, handler, uploadProgress) {
             this.$net.upload(uri, argument, handler, this.onInterceptor, uploadProgress);
+        }
+
+        mounted() {
+        }
+
+        beforeDestroy() {
         }
     }
 </script>

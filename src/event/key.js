@@ -1,16 +1,20 @@
 const prefix = {
     local: "evt-local-",
-    websocket: "evt-websocket-"
+    websocket: "evt-ws-"
 }
 
 const local = {
-    // 退出登录: (account)
+    // 发送websocket消息: (id, data)
+    socket: lkey("socket"),
+    // 登录系统: ()
+    login: lkey("login"),
+    // 退出登录: ()
     logout: lkey("logout"),
 }
 
 const websocket = {
-    // 示例: (id, data)
-    demo: wkey("demo"),
+    // 通知: (id, data)
+    notify: wkey("notify"),
 }
 
 

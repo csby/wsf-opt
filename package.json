@@ -22,6 +22,7 @@
     "node-sass": "^4.9.0",
     "sass-loader": "^7.1.0",
     "vue-class-component": "^7.0.2",
+    "vue-clipboard2": "^0.3.0",
     "vue-template-compiler": "^2.5.21"
   }
 }

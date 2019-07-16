@@ -1,12 +1,15 @@
 <template>
     <table class="table" v-loading="logining" element-loading-text="登录中...">
+        <tr >
+            <td></td>
+            <td align="right" style="color: lightgray;padding-bottom: 3px;">{{frontVersion}}</td>
+        </tr>
         <tr>
             <td colspan="2" style="">
                 <el-input placeholder="请输账号"
                           v-model="accountVal"
                           ref="account"
                           :clearable="true"
-                          :autofocus="true"
                           @input="onInputChanged"
                           @keyup.enter.native="login">
                     <i slot="prepend" class="el-icon-user-solid prefix" />
@@ -47,7 +50,7 @@
         <tr>
             <td colspan="2">
                 <el-checkbox v-model="autoLogin">自动登录</el-checkbox>
-                <el-checkbox v-model="rememberAccount">记住账号</el-checkbox>
+                <el-checkbox v-model="rememberPassword">记住密码</el-checkbox>
                 <el-link v-if="isNotNullOrEmpty(forgetPassword)" :href="forgetPassword" :underline="false">忘记密码</el-link>
             </td>
         </tr>
@@ -123,15 +126,27 @@
             }
         }
 
+        doFocus() {
+            if(this.isNullOrEmpty(this.accountVal)) {
+                this.$refs["account"].focus();
+            }
+            else if(this.isNullOrEmpty(this.passwordVal)) {
+                this.$refs["password"].focus();
+            }
+            else if (this.captchaRequired) {
+                this.$refs["captcha"].focus();
+            }
+        }
 
         mounted() {
+            this.$nextTick(this.doFocus);
         }
     }
 </script>
 
 <style scoped lang="scss">
     .table {
-        padding-top: 15px;
+        padding-top: 5px;
         width: 100%;
     }
 

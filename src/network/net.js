@@ -63,7 +63,7 @@ function upload(uri, argument, handler, interceptor, uploadProgress) {
     let token = db.get(db.keys.token);
     if(token) {
         config.headers = {
-            "Content-Type": "text/plain;charset=utf-8",
+            "Content-Type": "multipart/form-data",
             "token": token
         }
     }
@@ -120,7 +120,10 @@ function createSocket(uri, message, open, close, error) {
         return ws;
 
     } catch (err) {
-        console.log(err);
+        console.log("net.js-createSocket error:", err);
+        if(error) {
+            error(err);
+        }
     }
 
     return null;
