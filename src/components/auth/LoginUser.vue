@@ -77,6 +77,8 @@
         }
         onNotifyClose () {
             //console.log("websocket notify subscribe closed");
+            this.notifySocket = null;
+            this.$evt.fire(this.$evt.websocket.notify, this.$evt.id.wsOptUserLogout, null);
         }
         onNotifyError(evt) {
             //console.log("onNotifyError(", evt, ")");
@@ -113,6 +115,9 @@
                     console.log(e);
                 }
             }
+            else {
+                this.$evt.fire(this.$evt.websocket.notify, this.$evt.id.wsOptUserLogout, null);
+            }
         }
 
         mounted() {
@@ -128,5 +133,5 @@
 </script>
 
 <style scoped lang="scss">
-    
+
 </style>

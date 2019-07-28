@@ -31,6 +31,15 @@
             this.$router.push({ path: path });
         }
 
+        toLogin() {
+            let path = "/";
+            let fromPath = this.$router.history.current.path;
+            if(fromPath) {
+                path = fromPath;
+            }
+            this.$router.push({ name: "Login", params: {backPath: path} });
+        }
+
         error(err) {
             if(err) {
                 let msg = "<strong>" + err.summary + "</strong>";

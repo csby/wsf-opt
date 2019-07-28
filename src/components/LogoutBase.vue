@@ -10,7 +10,7 @@
                 this.$db.set(this.$db.keys.autoLogin, false);
 
                 this.$evt.fire(this.$evt.local.logout)
-                this.to("/login");
+                this.toLogin();
             }
             else {
                 this.error(err);
