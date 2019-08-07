@@ -1,7 +1,7 @@
 const title = "服务管理"
 
 const api = {
-    dev: "http://192.168.123.8:8080",
+    dev: "http://192.168.123.19:8089",
     pro: ""
 }
 

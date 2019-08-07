@@ -25,6 +25,20 @@ const uris = {
     // 更新服务
     svcUpdate: '/opt.api/service/update',
 
+    // 更新管理
+    // 是否支持
+    updEnable: '/opt.api/update/enable',
+    // 获取服务信息
+    updInfo: '/opt.api/update/info',
+    // 是否可在线重启
+    updRestartEnable: '/opt.api/update/restart/enable',
+    // 重启服务
+    updRestart: '/opt.api/update/restart',
+    // 是否可在线更新
+    updUploadEnable: '/opt.api/update/upload/enable',
+    // 更新服务
+    updUpload: '/opt.api/update/upload',
+
     // 系统信息
     // 获取主机信息
     monitorHost: '/opt.api/monitor/host',

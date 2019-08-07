@@ -1,9 +1,9 @@
 <template>
-    <el-card :body-style="bodyStyle">
+    <el-card :body-style="bodyStyle" v-show="visible">
         <div slot="header" class="header">
             <div>
-                <i class="el-icon-setting" ></i>
-                <span>后台服务</span>
+                <i class="el-icon-s-tools" ></i>
+                <span>更新管理</span>
             </div>
             <div >
                 <el-tooltip v-show="canUpdate" placement="top">
@@ -36,21 +36,27 @@
                 <span>服务名称:</span>
                 <span class="text">{{info.name}}</span>
             </div>
-            <div class="item">
+            <div class="item" v-if="isNotNullOrEmpty(info.bootTime)">
                 <span>启动时间:</span>
                 <span class="text">{{info.bootTime}}</span>
             </div>
-            <div class="item">
+            <div class="item" v-if="isNotNullOrEmpty(info.version)">
                 <span>版本号:</span>
                 <span class="text">{{info.version}}</span>
+            </div>
+            <div class="item">
+                <span>状态:</span>
+                <span class="text" v-if="info.status === 1">已停止</span>
+                <span class="text" v-else-if="info.status === 2">运行中</span>
+                <span class="text" v-else>未安装</span>
             </div>
         </div>
 
         <fileUpload v-model="dlgVisible"
                     width="500px"
                     labelWidth="60px"
-                    title="上传并更新后台服务"
-                    :uri="this.$uris.svcUpdate"
+                    title="上传更新管理服务"
+                    :uri="this.$uris.updUpload"
                     @onUploaded="onUploaded">
         </fileUpload>
     </el-card>
@@ -67,6 +73,7 @@
         }
     })
     export default class Info extends VueBase {
+        visible = false
         bodyStyle = {
             padding: "6px 1px 9px 20px"
         }
@@ -78,7 +85,8 @@
             name: "",
             version: "",
             bootTime: "",
-            remark: ""
+            remark: "",
+            status: 0
         }
         dlgVisible = false
 
@@ -88,7 +96,7 @@
             }
         }
         getUpdateEnable() {
-            this.post(this.$uris.svcUpdateEnable, null, this.onGetUpdateEnable);
+            this.post(this.$uris.updUploadEnable, null, this.onGetUpdateEnable);
         }
 
         onGetRestartEnable(code, err, data) {
@@ -97,26 +105,24 @@
             }
         }
         getRestartEnable() {
-            this.post(this.$uris.svcRestartEnable, null, this.onGetRestartEnable);
+            this.post(this.$uris.updRestartEnable, null, this.onGetRestartEnable);
         }
 
         onUploaded() {
-            this.sleep(2000);
-            this.to("/login");
+            this.getInfo();
         }
 
         onRestart(code, err, data) {
-            this.sleep(3000);
             this.restarting = false;
             if (code === 0) {
-                this.to("/login");
+                this.getInfo();
             }
             else if (code !== 20001) {
             }
         }
         restart() {
             this.restarting = true;
-            this.post(this.$uris.svcRestart, null, this.onRestart);
+            this.post(this.$uris.updRestart, null, this.onRestart);
         }
 
         onGetInfo(code, err, data) {
@@ -126,17 +132,33 @@
                 this.info.bootTime = data.bootTime;
                 this.info.version = data.version;
                 this.info.remark = data.remark;
+                this.info.status = data.status;
             }
         }
         getInfo() {
             this.loading = true
-            this.post(this.$uris.svcInfo, null, this.onGetInfo);
+            this.post(this.$uris.updInfo, null, this.onGetInfo);
+        }
+
+        onGetEnable(code, err, data) {
+            if (code === 0) {
+                this.visible = data;
+
+                if(data) {
+                    this.getInfo();
+                    this.getUpdateEnable();
+                    this.getRestartEnable();
+                }
+            }
+        }
+
+        getEnable() {
+            this.loading = true
+            this.post(this.$uris.updEnable, null, this.onGetEnable);
         }
 
         mounted() {
-            this.getInfo();
-            this.getUpdateEnable();
-            this.getRestartEnable();
+            this.getEnable();
         }
     }
 </script>

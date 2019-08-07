@@ -32,6 +32,9 @@
                 <optSvcInfo />
             </div>
             <div class="not-first">
+                <updSvcInfo />
+            </div>
+            <div class="not-first">
                 <monitorHost />
             </div>
             <div class="not-first">
@@ -48,6 +51,7 @@
     import Component from 'vue-class-component'
     import VueBase from '@/components/VueBase'
     import OptSvcInfo from '@/components/svc/opt/Info'
+    import UpdSvcInfo from '@/components/svc/upd/Info'
     import MonitorHost from '@/components/monitor/host/Host'
     import MonitorNetworkInterfaces from '@/components/monitor/network/Interface'
     import MonitorNetworkListening from '@/components/monitor/network/Listening'
@@ -59,6 +63,7 @@
     @Component({
         components: {
             optSvcInfo: OptSvcInfo,
+            updSvcInfo: UpdSvcInfo,
             monitorHost: MonitorHost,
             monitorNetworkInterfaces: MonitorNetworkInterfaces,
             monitorNetworkListening: MonitorNetworkListening,
@@ -84,6 +89,7 @@
         }
         .fix {
             padding-left: 10px;
+            width: 420px;
         }
         .not-first {
             margin-top: 5px;
