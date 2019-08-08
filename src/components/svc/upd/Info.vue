@@ -6,7 +6,7 @@
                 <span>更新管理</span>
             </div>
             <div >
-                <el-tooltip v-show="canUpdate" placement="top">
+                <el-tooltip v-show="canRestart" placement="top">
                     <div slot="content">
                         <span>重启</span>
                     </div>
@@ -15,7 +15,7 @@
                 </el-tooltip>
             </div>
             <div >
-                <el-tooltip v-show="canRestart && canUpdate" placement="top">
+                <el-tooltip v-show="canUpdate" placement="top">
                     <div slot="content">
                         <span>上传</span>
                     </div>
