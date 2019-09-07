@@ -23,6 +23,9 @@ const ids = {
     // 删除应用网站
     // data: null
     wsWebappSiteDelete: 116,
+    // 上传并发布自定义网站
+    // data: null
+    wsCustomSiteUpload: 119,
 }
 
 

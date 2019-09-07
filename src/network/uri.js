@@ -72,6 +72,14 @@ const uris = {
     siteWebappUpload: '/opt.api/site/webapp/upload',
     // 删除网站
     siteWebappDelete: '/opt.api/site/webapp/delete',
+    // 自定义网站
+    // 是否允许自定义网站
+    siteCustomEnable: '/opt.api/site/custom/enable',
+    // 获取自定义网站信息
+    siteCustomInfo: '/opt.api/site/custom/info',
+    // 上传自定义网站
+    siteCustomUpload: '/opt.api/site/custom/upload',
+
 }
 
 export default {

@@ -112,7 +112,7 @@
             }
             else {
                 this.info.url = "";
-                this.info.root = data.root;
+                this.info.root = "";
                 this.info.version = "";
                 this.info.deployTime = "";
             }

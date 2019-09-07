@@ -17,6 +17,13 @@
                              :uploadId="this.$evt.id.wsOptSiteUpload"/>
                 </div>
             </div>
+            <div class="not-first" v-if="customSiteEnable">
+                <siteFix :title="customSiteName"
+                         icon="el-icon-help"
+                         :infoUri="this.$uris.siteCustomInfo"
+                         :uploadUri="this.$uris.siteCustomUpload"
+                         :uploadId="this.$evt.id.wsCustomSiteUpload"/>
+            </div>
             <div class="not-first">
                 <siteWebapp />
             </div>
@@ -74,7 +81,25 @@
         }
     })
     export default class Dashboard extends VueBase {
-        
+        customSiteName = "";
+        customSiteEnable = false
+
+        onGetInfo(code, err, data) {
+            if (code === 0) {
+                this.customSiteName = data;
+                this.customSiteEnable = true;
+            }
+            else {
+                this.customSiteEnable = false;
+            }
+        }
+        getInfo() {
+            this.post(this.$uris.siteCustomEnable, null, this.onGetInfo);
+        }
+
+        mounted() {
+            this.getInfo();
+        }
     }
 </script>
 
